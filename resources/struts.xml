@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE struts PUBLIC
+        "-//Apache Software Foundation//DTD Struts Configuration 2.3//EN"
+        "http://struts.apache.org/dtds/struts-2.3.dtd">
+
+<struts>
+
+    <constant name="struts.i18n.encoding" value="UTF-8"/>
+    <constant name="struts.ui.theme" value="simple"/>
+
+    <package name="SSH" namespace="/" extends="struts-default">
+
+        <interceptors>
+            <interceptor name="logonInterceptor" class="com.gsafety.management.user.hm.interceptor.LogonInterceptor"/>
+            <interceptor-stack name="myInterceptor">
+                <interceptor-ref name="defaultStack"/>
+                <interceptor-ref name="logonInterceptor"/>
+            </interceptor-stack>
+        </interceptors>
+
+        <default-interceptor-ref name="myInterceptor"/>
+
+        <global-results>
+            <result name="logon">/WEB-INF/jsp/user/logon.jsp</result>
+        </global-results>
+
+        <action name="logon" class="userAction" method="logon">
+            <result name="manage-success">/WEB-INF/jsp/success.jsp</result>
+            <result name="deploy-success" type="redirectAction">deploy.action</result>
+            <result name="demonstration-success" type="redirectAction">demonstration</result>
+            <result name="error">/WEB-INF/jsp/user/logon.jsp</result>
+        </action>
+
+        <action name="resetPassword" class="userAction" method="resetPassword">
+            <result name="success" type="redirectAction">list</result>
+        </action>
+
+        <action name="manage" class="manageAction" method="getManagement">
+            <result name="success">/WEB-INF/jsp/manage/masterList.jsp</result>
+        </action>
+
+        <action name="deploy-*" class="deployAction" method="{1}">
+            <result name="success">/WEB-INF/jsp/deploy/{1}.jsp</result>
+        </action>
+
+        <action name="demonstration" class="deployAction" method="getDeploys">
+            <result name="success">/WEB-INF/jsp/demonstration/list.jsp</result>
+            <result name="none">/WEB-INF/jsp/demonstration/list.jsp</result>
+        </action>
+
+        <action name="demoBySystemName" class="deployAction" method="getDeployByName">
+            <result name="input">/WEB-INF/jsp/demonstration/demonstration.jsp</result>
+            <result name="success">/WEB-INF/jsp/demonstration/demonstration.jsp</result>
+        </action>
+
+        <action name="userAdd">
+            <result name="success">/WEB-INF/jsp/manage/addUser.jsp</result>
+        </action>
+
+        <action name="addUser" class="userAction" method="addUser">
+            <result name="success" type="redirectAction">list</result>
+        </action>
+
+        <action name="userUpdate" class="userAction" method="getUser">
+            <result name="success">/WEB-INF/jsp/user/updateUser.jsp</result>
+        </action>
+
+        <action name="updateUser" class="userAction" method="updateUser">
+            <result name="success" type="redirectAction">list</result>
+        </action>
+
+        <action name="updatePassword" class="userAction" method="updatePassword">
+            <result name="success" type="redirectAction">list</result>
+        </action>
+
+        <action name="passwordUpdate">
+            <result name="success">/WEB-INF/jsp/user/updatePassword.jsp</result>
+        </action>
+
+        <action name="getUserByAccount" class="userAction" method="getUserByAccount">
+            <result name="input">/WEB-INF/jsp/manage/userList.jsp</result>
+        </action>
+
+        <action name="list" class="userAction" method="getList">
+            <result name="success">/WEB-INF/jsp/manage/userList.jsp</result>
+            <result name="error">/WEB-INF/jsp/user/logon.jsp</result>
+        </action>
+
+        <action name="masterAdd">
+            <result>/WEB-INF/jsp/manage/addMaster.jsp</result>
+        </action>
+
+        <action name="addMaster" class="manageAction" method="addMaster">
+            <result name="success" type="redirectAction">manage</result>
+            <result name="input" type="redirectAction">manage</result>
+        </action>
+
+        <action name="deleteMaster" class="manageAction" method="deleteMaster">
+            <result name="success" type="redirectAction">manage</result>
+            <result name="input" type="redirectAction">manage</result>
+        </action>
+
+        <action name="masterUpdate" class="manageAction" method="getManagementById">
+            <result name="success">/WEB-INF/jsp/manage/updateMaster.jsp</result>
+        </action>
+
+        <action name="updateMaster" class="manageAction" method="updateMaster">
+            <result name="success" type="redirectAction">manage</result>
+        </action>
+
+    </package>
+
+</struts>
